@@ -1,0 +1,2 @@
+output_project: "../cpp_demo" # where is the final project
+intermediate_representation: "../intermediate" # where to store the intermediate representation files
