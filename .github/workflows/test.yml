@@ -1,0 +1,20 @@
+name: GD2CPP Test
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - run: cargo test
+      - name: check no change
+        shell: bash
+        run: git diff-files -p --exit-code --diff-filter=ADMR -w
