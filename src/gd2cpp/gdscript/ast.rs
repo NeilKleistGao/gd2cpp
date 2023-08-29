@@ -31,6 +31,11 @@ declare_node!(Assignment,
   value, Expression
 );
 declare_node!(Await, to, Expression);
+declare_node!(BinaryOp, lhs, Expression, rhs, Expression); // TODO: operators
+declare_node!(Break);
+declare_node!(Breakpoint);
+declare_node!(Call, callee, Expression, args, Vec<Expression>);
+declare_node!(Cast, oprand, Expression); // TODO: type node
 declare_node!(Expression, value, Variant);
 
 macro_rules! md {
@@ -45,6 +50,11 @@ pub union ASTNode {
   assert: md!(Assert),
   assign: md!(Assignment),
   awa: md!(Await),
+  biop: md!(BinaryOp),
+  brk: md!(Break),
+  bkpoint: md!(Breakpoint),
+  call: md!(Call),
+  cast: md!(Cast),
   expr: md!(Expression)
 }
 
