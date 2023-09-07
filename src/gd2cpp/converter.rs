@@ -5,6 +5,7 @@ use walkdir::WalkDir;
 use std::process::Command;
 
 use super::Config;
+use super::gdscript::tokenize;
 
 pub struct Converter {
   base: String,
@@ -59,7 +60,7 @@ impl Converter {
   }
 
   fn translate(&self, filename: String) {
-    // TODO:
+    tokenize(""); // TODO:
   }
 
 }

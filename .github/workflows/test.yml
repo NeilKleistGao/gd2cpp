@@ -14,7 +14,9 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: cargo test
+      - name: execute translation
+        shell: bash
+        run: ./test
       - name: check no change
         shell: bash
         run: git diff-files -p --exit-code --diff-filter=ADMR -w
