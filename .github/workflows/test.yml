@@ -16,7 +16,7 @@ jobs:
           override: true
       - name: execute translation
         shell: bash
-        run: ./test
+        run: cargo run tests/gd_demo
       - name: check no change
         shell: bash
         run: git diff-files -p --exit-code --diff-filter=ADMR -w
