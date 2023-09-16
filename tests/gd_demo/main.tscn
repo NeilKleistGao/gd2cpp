@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck6102htkvhrm"]
-
-[ext_resource type="Script" path="res://SyntaxTest.gd" id="1_2s2f8"]
-
-[node name="Root" type="Node2D"]
-
-[node name="SyntaxTest" type="Node" parent="."]
-script = ExtResource("1_2s2f8")

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GD2CPP" inherits="Script" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Translate GDscript to C++(in LLVM IR).
+	</brief_description>
+	<description>
+		Translate GDscript to C++(in LLVM IR).
+	</description>
+	<tutorials>
+		<link title="GDScript documentation index">$DOCS_URL/tutorials/scripting/gdscript/index.html</link>
+	</tutorials>
+	<methods>
+	</methods>
+</class>
