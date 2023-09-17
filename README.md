@@ -2,8 +2,8 @@
 
 ## TODO
 - [ ] Scan the project to get all `*.gd` files
-- [ ] Add editor support to indicate the output path
+- [ ] Add editor support to set the output configurations
 - [ ] Translate `*.gd` to LLVM IR
 - [ ] Compile LLVM IR
-- [ ] Update project information
+- [ ] Export the project
 
