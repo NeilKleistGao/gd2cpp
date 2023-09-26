@@ -24,8 +24,12 @@
 
 #include "register_types.h"
 
+#include "editor/gd2cpp_menu.h"
+
 void initialize_gd2cpp_module(ModuleInitializationLevel p_level) {
-  // TODO: implement
+#ifdef TOOLS_ENABLED
+  EditorPlugins::add_by_type<GD2CppMenu>();
+#endif
 }
 
 void uninitialize_gd2cpp_module(ModuleInitializationLevel p_level) {

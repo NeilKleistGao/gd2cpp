@@ -23,3 +23,30 @@
  **/
 
 #include "gd2cpp_menu.h"
+
+#ifdef TOOLS_ENABLED
+bool GD2CppMenu::inited = false;
+
+GD2CppMenu::GD2CppMenu() {
+  if (!inited) { // TODO: do better?
+    inited = true;
+    add_tool_menu_item("Export with GD2Cpp", callable_mp(this, &GD2CppMenu::pop_up));
+  }
+}
+
+GD2CppMenu::~GD2CppMenu() {
+}
+
+String GD2CppMenu::get_name() const {
+  return "GD2Cpp";
+}
+
+bool GD2CppMenu::has_main_screen() const {
+  return false;
+}
+
+void GD2CppMenu::pop_up() {
+  ERR_PRINT("Not Implemented Yet.");
+}
+
+#endif

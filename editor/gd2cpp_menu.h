@@ -25,5 +25,20 @@
 #ifndef __EDITOR_GD2CPP_MENU__H__
 #define __EDITOR_GD2CPP_MENU__H__
 
+#ifdef TOOLS_ENABLED
+#include "editor/editor_plugin.h"
+
+class GD2CppMenu: public EditorPlugin {
+  GDCLASS(GD2CppMenu, EditorPlugin);
+public:
+  virtual String get_name() const override;
+	bool has_main_screen() const override;
+  GD2CppMenu();
+  virtual ~GD2CppMenu();
+private:
+  void pop_up();
+  static bool inited;
+};
+#endif
 
 #endif // __EDITOR_GD2CPP_MENU__H__
