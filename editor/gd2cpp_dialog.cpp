@@ -22,27 +22,22 @@
  * SOFTWARE.
  **/
 
-#ifndef __EDITOR_GD2CPP_MENU__H__
-#define __EDITOR_GD2CPP_MENU__H__
-
-#ifdef TOOLS_ENABLED
-#include "editor/editor_plugin.h"
 #include "gd2cpp_dialog.h"
 
-class GD2CppMenu: public EditorPlugin {
-  GDCLASS(GD2CppMenu, EditorPlugin);
-public:
-  virtual String get_name() const override;
-	bool has_main_screen() const override;
-  GD2CppMenu();
-  virtual ~GD2CppMenu();
-private:
-  static bool inited;
-  const String shown_title;
-  GD2CppDialog* dialog;
+#ifdef TOOLS_ENABLED
+#include "scene/gui/label.h"
 
-  void popup();
-};
+GD2CppDialog::GD2CppDialog() {
+  set_title(TTR("Export with GD2Cpp"));
+  hint_text = memnew(Label);
+  hint_text->set_text(
+    "Export current project by translating gdscript to llvm IR. Only current platform is supported. Please make sure LLVM is available."
+  );
+  add_child(hint_text);
+}
+
+void GD2CppDialog::ok_pressed() {
+  ERR_PRINT("Not Implemented Yet.");
+}
+
 #endif
-
-#endif // __EDITOR_GD2CPP_MENU__H__

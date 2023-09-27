@@ -25,12 +25,16 @@
 #include "gd2cpp_menu.h"
 
 #ifdef TOOLS_ENABLED
+
+
 bool GD2CppMenu::inited = false;
 
-GD2CppMenu::GD2CppMenu() {
+GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
   if (!inited) { // TODO: do better?
     inited = true;
-    add_tool_menu_item("Export with GD2Cpp", callable_mp(this, &GD2CppMenu::pop_up));
+    add_tool_menu_item(shown_title, callable_mp(this, &GD2CppMenu::popup));
+    dialog = memnew(GD2CppDialog);
+    add_child(dialog);
   }
 }
 
@@ -45,8 +49,10 @@ bool GD2CppMenu::has_main_screen() const {
   return false;
 }
 
-void GD2CppMenu::pop_up() {
-  ERR_PRINT("Not Implemented Yet.");
+void GD2CppMenu::popup() {
+  if (dialog != nullptr) {
+    dialog->popup_centered_ratio(0.01f);
+  }
 }
 
 #endif

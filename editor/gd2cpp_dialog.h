@@ -22,27 +22,23 @@
  * SOFTWARE.
  **/
 
-#ifndef __EDITOR_GD2CPP_MENU__H__
-#define __EDITOR_GD2CPP_MENU__H__
+#ifndef __EDITOR_GD2CPP_DIALOG__H__
+#define __EDITOR_GD2CPP_DIALOG__H__
 
 #ifdef TOOLS_ENABLED
-#include "editor/editor_plugin.h"
-#include "gd2cpp_dialog.h"
+#include "scene/gui/dialogs.h"
 
-class GD2CppMenu: public EditorPlugin {
-  GDCLASS(GD2CppMenu, EditorPlugin);
+class GD2CppDialog: public ConfirmationDialog {
+  GDCLASS(GD2CppDialog, ConfirmationDialog);
 public:
-  virtual String get_name() const override;
-	bool has_main_screen() const override;
-  GD2CppMenu();
-  virtual ~GD2CppMenu();
-private:
-  static bool inited;
-  const String shown_title;
-  GD2CppDialog* dialog;
+  GD2CppDialog();
+  ~GD2CppDialog() = default;
 
-  void popup();
+  virtual void ok_pressed();
+private:
+  Label* hint_text = nullptr;
 };
 #endif
 
-#endif // __EDITOR_GD2CPP_MENU__H__
+#endif // __EDITOR_GD2CPP_DIALOG__H__
+
