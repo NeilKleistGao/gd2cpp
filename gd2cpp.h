@@ -22,26 +22,10 @@
  * SOFTWARE.
  **/
 
-#ifndef __EDITOR_GD2CPP_DIALOG__H__
-#define __EDITOR_GD2CPP_DIALOG__H__
+#ifndef __GD2CPP__H__
+#define __GD2CPP__H__
 
 #ifdef TOOLS_ENABLED
-#include "scene/gui/dialogs.h"
-#include "core/os/thread.h"
-
-class GD2CppDialog: public ConfirmationDialog {
-  GDCLASS(GD2CppDialog, ConfirmationDialog);
-public:
-  GD2CppDialog();
-  ~GD2CppDialog();
-
-  virtual void ok_pressed();
-private:
-  Label* hint_text = nullptr;
-  const String task_name;
-  Thread* thread = nullptr;
-};
 #endif
 
-#endif // __EDITOR_GD2CPP_DIALOG__H__
-
+#endif // __GD2CPP__H__

@@ -26,8 +26,15 @@
 
 #ifdef TOOLS_ENABLED
 #include "scene/gui/label.h"
+#include "editor/editor_node.h"
 
-GD2CppDialog::GD2CppDialog() {
+static void Run(void *p_userdata) {
+  EditorNode* singleton = EditorNode::get_singleton();
+  // TODO: implement
+  singleton->progress_end_task("gd2cpp");
+}
+
+GD2CppDialog::GD2CppDialog(): task_name{"gd2cpp"} {
   set_title(TTR("Export with GD2Cpp"));
   hint_text = memnew(Label);
   hint_text->set_text(
@@ -37,7 +44,18 @@ GD2CppDialog::GD2CppDialog() {
 }
 
 void GD2CppDialog::ok_pressed() {
-  ERR_PRINT("Not Implemented Yet.");
+  EditorNode* singleton = EditorNode::get_singleton();
+  singleton->progress_add_task(task_name, "Scan Project", 100);
+  singleton->progress_task_step(task_name, "Scan Project", 0);
+  // TODO
+  singleton->progress_end_task("gd2cpp");
+  // thread = memnew(Thread);
+  // thread->set_name(task_name);
+  // thread->start(&Run, nullptr);
+}
+
+GD2CppDialog::~GD2CppDialog() {
+  memdelete(hint_text);
 }
 
 #endif
