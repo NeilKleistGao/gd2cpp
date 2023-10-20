@@ -27,7 +27,6 @@
 
 #ifdef TOOLS_ENABLED
 #include "scene/gui/dialogs.h"
-#include "core/os/thread.h"
 
 class GD2CppDialog: public ConfirmationDialog {
   GDCLASS(GD2CppDialog, ConfirmationDialog);
@@ -36,16 +35,14 @@ public:
   ~GD2CppDialog();
 
   void ok_pressed() final;
-  void tick();
 private:
   Label* hint_text = nullptr;
-  Thread thread{};
 
-  static Mutex mutex;
-  static int progress;
-  static constexpr int full_steps = 6;
+  int progress = 0;
+  const int full_steps = 6;
   static String task_name;
-  static void run(void *p_userdata);
+
+  void run();
 };
 #endif
 
