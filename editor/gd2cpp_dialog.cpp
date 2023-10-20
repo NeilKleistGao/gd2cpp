@@ -31,7 +31,7 @@ GD2CppDialog::GD2CppDialog() {
   set_title(TTR("Export with GD2Cpp"));
   hint_text = memnew(Label);
   hint_text->set_text(
-    "Export current project by translating gdscript to llvm IR. Only current platform is supported. Please make sure LLVM is available."
+    "Export current project by translating gdscript to llvm IR. Only current platform is supported. Please make sure LLVM assembler is available."
   );
   add_child(hint_text);
 }
