@@ -28,13 +28,11 @@
 #include "scene/gui/label.h"
 #include "editor/editor_node.h"
 
-static void Run(void *p_userdata) {
-  EditorNode* singleton = EditorNode::get_singleton();
-  // TODO: implement
-  singleton->progress_end_task("gd2cpp");
-}
+String GD2CppDialog::task_name = "gd2cpp";
+int GD2CppDialog::progress = 0;
+Mutex GD2CppDialog::mutex = Mutex{};
 
-GD2CppDialog::GD2CppDialog(): task_name{"gd2cpp"} {
+GD2CppDialog::GD2CppDialog() {
   set_title(TTR("Export with GD2Cpp"));
   hint_text = memnew(Label);
   hint_text->set_text(
@@ -45,17 +43,41 @@ GD2CppDialog::GD2CppDialog(): task_name{"gd2cpp"} {
 
 void GD2CppDialog::ok_pressed() {
   EditorNode* singleton = EditorNode::get_singleton();
-  singleton->progress_add_task(task_name, "Scan Project", 100);
+  singleton->progress_add_task(task_name, "Scan Project", full_steps);
   singleton->progress_task_step(task_name, "Scan Project", 0);
-  // TODO
-  singleton->progress_end_task("gd2cpp");
-  // thread = memnew(Thread);
-  // thread->set_name(task_name);
-  // thread->start(&Run, nullptr);
+
+  thread.set_name(task_name);
+  thread.start(run, this);
 }
 
 GD2CppDialog::~GD2CppDialog() {
+  thread.wait_to_finish();
   memdelete(hint_text);
+}
+
+void GD2CppDialog::tick() {
+  ERR_PRINT("111");
+  if (!mutex.try_lock()) {
+    return;
+  }
+
+  EditorNode* singleton = EditorNode::get_singleton();
+  if (progress == full_steps) {
+    singleton->progress_end_task(task_name);
+  }
+  else {
+    singleton->progress_task_step(task_name, "Scan Project", progress);
+  }
+  mutex.unlock();
+}
+
+void GD2CppDialog::run(void *p_userdata) {
+  mutex.lock();
+  progress = full_steps;
+  mutex.unlock();
+  GD2CppDialog* self = reinterpret_cast<GD2CppDialog*>(p_userdata);
+  self->call_deferred("tick");
+  // TODO: implement
 }
 
 #endif

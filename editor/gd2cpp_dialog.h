@@ -35,11 +35,17 @@ public:
   GD2CppDialog();
   ~GD2CppDialog();
 
-  virtual void ok_pressed();
+  void ok_pressed() final;
+  void tick();
 private:
   Label* hint_text = nullptr;
-  const String task_name;
-  Thread* thread = nullptr;
+  Thread thread{};
+
+  static Mutex mutex;
+  static int progress;
+  static constexpr int full_steps = 6;
+  static String task_name;
+  static void run(void *p_userdata);
 };
 #endif
 
