@@ -27,6 +27,7 @@
 #ifdef TOOLS_ENABLED
 #include "scene/gui/label.h"
 #include "editor/editor_node.h"
+#include "../helper.h"
 
 String GD2CppDialog::task_name = "gd2cpp";
 
@@ -41,8 +42,8 @@ GD2CppDialog::GD2CppDialog() {
 
 void GD2CppDialog::ok_pressed() {
   EditorNode* singleton = EditorNode::get_singleton();
-  singleton->progress_add_task(task_name, "Scan Project", full_steps);
-  singleton->progress_task_step(task_name, "Scan Project", 0);
+  singleton->progress_add_task(task_name, "Copy Project", full_steps);
+  singleton->progress_task_step(task_name, "Copy Project", 0);
   run();
 }
 
@@ -51,13 +52,23 @@ GD2CppDialog::~GD2CppDialog() {
 }
 
 void GD2CppDialog::run() {
-  progress = full_steps;
   EditorNode* singleton = EditorNode::get_singleton();
+
+  if (gd2cpp::copy_project() == Error::OK) {
+    OS::get_singleton()->print("copied project...");
+    // TODO: next
+  }
+  else {
+    ERR_FAIL_MSG("can not copy the project.");
+    // TODO: error report
+  }
+
+  progress = full_steps;
   if (progress == full_steps) {
     singleton->progress_end_task(task_name);
   }
   else {
-    singleton->progress_task_step(task_name, "Scan Project", progress);
+    singleton->progress_task_step(task_name, "Copy Project", progress);
   }
 }
 

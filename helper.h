@@ -22,35 +22,13 @@
  * SOFTWARE.
  **/
 
-#ifndef __EDITOR_GD2CPP_DIALOG__H__
-#define __EDITOR_GD2CPP_DIALOG__H__
+#ifndef __GD2CPP_HELPER__H__
+#define __GD2CPP_HELPER__H__
 
-#ifdef TOOLS_ENABLED
-#include "scene/gui/dialogs.h"
+#include "core/error/error_list.h"
 
-class GD2CppDialog: public ConfirmationDialog {
-  GDCLASS(GD2CppDialog, ConfirmationDialog);
-public:
-  GD2CppDialog();
-  ~GD2CppDialog();
+namespace gd2cpp {
+  Error copy_project();
+} // namespace gd2cpp
 
-  void ok_pressed() final;
-private:
-  Label* hint_text = nullptr;
-
-  int progress = 0;
-  /**
-   * 0. copy project
-   * 1. scan scripts
-   * 2. translate
-   * 3. compile
-  */
-  const int full_steps = 4;
-  static String task_name;
-
-  void run();
-};
-#endif
-
-#endif // __EDITOR_GD2CPP_DIALOG__H__
-
+#endif // __GD2CPP_HELPER__H__
