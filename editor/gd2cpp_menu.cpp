@@ -39,6 +39,8 @@ GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
 }
 
 GD2CppMenu::~GD2CppMenu() {
+  memdelete(dialog);
+  dialog = nullptr;
 }
 
 String GD2CppMenu::get_name() const {
