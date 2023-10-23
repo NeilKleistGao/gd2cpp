@@ -26,6 +26,7 @@
 
 #ifdef TOOLS_ENABLED
 
+#include "core/config/project_settings.h"
 
 bool GD2CppMenu::inited = false;
 
@@ -35,6 +36,10 @@ GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
     add_tool_menu_item(shown_title, callable_mp(this, &GD2CppMenu::popup));
     dialog = memnew(GD2CppDialog);
     add_child(dialog);
+  }
+
+  if (!ProjectSettings::get_singleton()->has_setting("gd2cpp/path")) {
+    GLOBAL_DEF("gd2cpp/path", "./gd2cpp");
   }
 }
 

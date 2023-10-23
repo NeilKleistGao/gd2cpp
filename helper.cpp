@@ -24,9 +24,15 @@
 
 #include "helper.h"
 
+#include "editor/editor_node.h"
+#include "core/config/project_settings.h"
+
 namespace gd2cpp {
   Error copy_project() {
-    
+    EditorNode::get_singleton()->save_all_scenes();
+    const String target_path = ProjectSettings::get_singleton()->has_setting("gd2cpp/path") ?
+      (String)ProjectSettings::get_singleton()->get_setting("gd2cpp/path") : String("./gd2cpp");
+    print_line("copying project to", target_path, "...");
     return Error::OK;
   }
 } // namespace gd2cpp

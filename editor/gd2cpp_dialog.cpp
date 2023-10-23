@@ -55,7 +55,7 @@ void GD2CppDialog::run() {
   EditorNode* singleton = EditorNode::get_singleton();
 
   if (gd2cpp::copy_project() == Error::OK) {
-    OS::get_singleton()->print("copied project...");
+    print_line("copied project...");
     // TODO: next
   }
   else {
