@@ -25,4 +25,50 @@
 #include "gd2cpp.h"
 
 #ifdef TOOLS_ENABLED
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
+#include "core/io/dir_access.h"
+
+namespace gd2cpp {
+  namespace {
+  } // namespace
+
+  Array scan() {
+    Array scripts{}, queue{};
+    queue.push_back(String{"res://"});
+    Error err = Error::OK;
+
+    while (!queue.is_empty()) {
+      String cur = queue.pop_front();
+      print_line(String{"Scanning "} + cur);
+      Ref<DirAccess> dir = DirAccess::open(cur, &err);
+
+      if (err != Error::OK) {
+        ERR_PRINT("Failed when scanning project.");
+        scripts.clear();
+        break;
+      }
+
+      PackedStringArray files = dir->get_files();
+      PackedStringArray dirs = dir->get_directories();
+
+      for (int i = 0; i < files.size(); ++i) {
+        String filename = files[i];
+        if (filename.ends_with(".gd")) {
+          String fullpath = (cur.ends_with("/")) ? cur + filename : cur + "/" + filename;
+          print_line(String{"Found "} + fullpath);
+          scripts.push_back(fullpath);
+        }
+      }
+
+      for (int i = 0; i < dirs.size(); ++i) {
+        String next = dirs[i];
+        queue.push_back(DirAccess::get_full_path(next, DirAccess::ACCESS_RESOURCES));
+      }
+    }
+
+    return scripts;
+  }
+} // namespace gd2cpp
+
 #endif

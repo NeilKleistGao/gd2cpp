@@ -42,6 +42,11 @@ GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
     GLOBAL_DEF("gd2cpp/template", "");
     ProjectSettings::get_singleton()->save();
   }
+
+  if (!ProjectSettings::get_singleton()->has_setting("gd2cpp/directory")) {
+    GLOBAL_DEF("gd2cpp/directory", "llvm");
+    ProjectSettings::get_singleton()->save();
+  }
 }
 
 GD2CppMenu::~GD2CppMenu() {

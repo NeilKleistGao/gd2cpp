@@ -26,6 +26,13 @@
 #define __GD2CPP__H__
 
 #ifdef TOOLS_ENABLED
+
+#include "core/variant/array.h"
+
+namespace gd2cpp {
+  Array scan();
+} // namespace gd2cpp
+
 #endif
 
 #endif // __GD2CPP__H__
