@@ -38,8 +38,9 @@ GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
     add_child(dialog);
   }
 
-  if (!ProjectSettings::get_singleton()->has_setting("gd2cpp/path")) {
-    GLOBAL_DEF("gd2cpp/path", "./gd2cpp");
+  if (!ProjectSettings::get_singleton()->has_setting("gd2cpp/template")) {
+    GLOBAL_DEF("gd2cpp/template", "");
+    ProjectSettings::get_singleton()->save();
   }
 }
 

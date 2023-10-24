@@ -27,7 +27,6 @@
 #ifdef TOOLS_ENABLED
 #include "scene/gui/label.h"
 #include "editor/editor_node.h"
-#include "../helper.h"
 
 String GD2CppDialog::task_name = "gd2cpp";
 
@@ -53,15 +52,6 @@ GD2CppDialog::~GD2CppDialog() {
 
 void GD2CppDialog::run() {
   EditorNode* singleton = EditorNode::get_singleton();
-
-  if (gd2cpp::copy_project() == Error::OK) {
-    print_line("copied project...");
-    // TODO: next
-  }
-  else {
-    ERR_FAIL_MSG("can not copy the project.");
-    // TODO: error report
-  }
 
   progress = full_steps;
   if (progress == full_steps) {

@@ -40,12 +40,15 @@ private:
 
   int progress = 0;
   /**
-   * 0. copy project
-   * 1. scan scripts
-   * 2. translate
-   * 3. compile
+   * 0. scan scripts
+   * 1. translate
+   * 2. compile
+   * 3. backup files
+   * 4. update references
+   * 5. export
+   * 6. reset
   */
-  const int full_steps = 4;
+  const int full_steps = 7;
   static String task_name;
 
   void run();
