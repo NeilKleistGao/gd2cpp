@@ -1,0 +1,36 @@
+name: Build Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - README.md
+      - .gitignore
+      - .gitattributes
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - README.md
+      - .gitignore
+      - .gitattributes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: godotengine/godot
+      - uses: actions/checkout@v4
+        with:
+          path: modules
+      - name: Linux dependencies for tests
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB8B81E14DA65431D7504EA8F63F0F2B90935439
+          sudo add-apt-repository "deb https://ppa.launchpadcontent.net/kisak/turtle/ubuntu focal main"
+          sudo apt-get install -qq mesa-vulkan-drivers
+      - name: Setup python and scons
+        uses: ./.github/actions/godot-deps
+      - name: Build
+        run: scons platform=linuxbsd
