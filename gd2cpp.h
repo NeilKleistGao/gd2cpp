@@ -27,10 +27,12 @@
 
 #ifdef TOOLS_ENABLED
 
+#include "core/string/ustring.h"
 #include "core/variant/array.h"
 
 namespace gd2cpp {
   Array scan();
+  String compile(const String& p_from, const String& p_dir);
 } // namespace gd2cpp
 
 #endif

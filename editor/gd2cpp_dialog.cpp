@@ -27,6 +27,7 @@
 #ifdef TOOLS_ENABLED
 #include "scene/gui/label.h"
 #include "editor/editor_node.h"
+#include "core/config/project_settings.h"
 #include "../gd2cpp.h"
 
 String GD2CppDialog::task_name = "gd2cpp";
@@ -57,14 +58,17 @@ void GD2CppDialog::run() {
 
   Array scripts = gd2cpp::scan();
   print_line(String{"Got "} + String::num_int64(scripts.size()) + String{" script(s)."});
+  ++progress;
 
-  progress = full_steps; // TODO: full workflow
-  if (progress == full_steps) {
-    singleton->progress_end_task(task_name);
+  const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "llvm");
+  for (int i = 0; i < scripts.size(); ++i) {
+    const String& script = scripts[i];
+    singleton->progress_task_step(task_name, String{"Translating "} + script + "...", progress);
+    String to = gd2cpp::compile(script, output_path); // TODO: store `to` for mapping
+    print_line(to);
   }
-  else {
-    singleton->progress_task_step(task_name, "Scanning project...", progress);
-  }
+
+  singleton->progress_end_task(task_name);
 }
 
 #endif

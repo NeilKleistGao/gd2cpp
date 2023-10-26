@@ -25,12 +25,36 @@
 #include "gd2cpp.h"
 
 #ifdef TOOLS_ENABLED
-#include "core/string/ustring.h"
 #include "core/variant/variant.h"
 #include "core/io/dir_access.h"
+#include "core/io/file_access.h"
 
 namespace gd2cpp {
   namespace {
+    void save(const String& p_filename, const String& p_content) {
+      Error err;
+      const String path = p_filename.get_base_dir();
+      Ref<DirAccess> dir = DirAccess::open("res://", &err);
+      if (!dir->dir_exists(path)) {
+        err = dir->make_dir_recursive(path);
+        if (err != OK) {
+          print_error("Cannot create directory " + path + ".");
+          return;
+        }
+      }
+
+		  Ref<FileAccess> file = FileAccess::open(p_filename, FileAccess::WRITE, &err);
+      if (err != OK) {
+        print_error("Cannot save LLVM file " + p_filename + ".");
+      }
+      else {
+        file->store_string(p_content);
+      }
+    }
+
+    _FORCE_INLINE_ String gen_source_filename(const String& p_from) {
+      return String{"source_filename = \""} + p_from + "\"\n";
+    }
   } // namespace
 
   Array scan() {
@@ -68,6 +92,12 @@ namespace gd2cpp {
     }
 
     return scripts;
+  }
+
+  String compile(const String& p_from, const String& p_dir) {
+    String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
+    save(to, gen_source_filename(p_from));
+    return to;
   }
 } // namespace gd2cpp
 
