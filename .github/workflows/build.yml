@@ -23,7 +23,7 @@ jobs:
           repository: godotengine/godot
       - uses: actions/checkout@v4
         with:
-          path: modules
+          path: modules/gd2cpp
       - name: Linux dependencies for tests
         run: |
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
