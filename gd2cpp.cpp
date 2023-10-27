@@ -82,8 +82,10 @@ namespace gd2cpp {
         String filename = files[i];
         if (filename.ends_with(".gd")) {
           String fullpath = (cur.ends_with("/")) ? cur + filename : cur + "/" + filename;
-          print_line(String{"Found "} + fullpath);
-          scripts.push_back(fullpath);
+          if (scripts.find(fullpath) == -1) {
+            print_line(String{"Found "} + fullpath);
+            scripts.push_back(fullpath);
+          }
         }
       }
 
