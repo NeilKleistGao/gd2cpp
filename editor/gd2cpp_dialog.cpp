@@ -29,6 +29,7 @@
 #include "editor/editor_node.h"
 #include "core/config/project_settings.h"
 #include "../gd2cpp.h"
+#include "../gd2cpp_transformer.h"
 
 String GD2CppDialog::task_name = "gd2cpp";
 
@@ -69,6 +70,7 @@ void GD2CppDialog::run() {
   }
 
   singleton->progress_end_task(task_name);
+  GD2CPPTransformer::release();
 }
 
 #endif

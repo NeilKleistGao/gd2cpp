@@ -29,6 +29,8 @@
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
 
+#include "gd2cpp_transformer.h"
+
 namespace gd2cpp {
   namespace {
     void save(const String& p_filename, const String& p_content) {
@@ -96,6 +98,7 @@ namespace gd2cpp {
 
   String compile(const String& p_from, const String& p_dir) {
     String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
+    GD2CPPTransformer::get_singleton()->parse(p_from, ""); // TODO
     save(to, gen_source_filename(p_from));
     return to;
   }
