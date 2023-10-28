@@ -41,8 +41,16 @@ void GD2CPPTransformer::release() {
   }
 }
 
-GDScriptParser::ClassNode* GD2CPPTransformer::parse(const String& p_path, const String& p_script) {
-  return nullptr; // TODO:
+String GD2CPPTransformer::transform(const String& p_path, const String& p_code, Error* p_err) {
+  err = p_err;
+  *err = parser->parse(p_code, p_path, false);
+  if (*err != OK) {
+    print_error("can not compile " + p_path);
+  }
+
+  // TODO: translate
+
+  return "";
 }
 
 GD2CPPTransformer::GD2CPPTransformer() {

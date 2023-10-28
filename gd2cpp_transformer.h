@@ -38,11 +38,12 @@ public:
   static GD2CPPTransformer* get_singleton();
   static void release();
 
-  GDScriptParser::ClassNode* parse(const String& p_path, const String& p_script);
+  String transform(const String& p_path, const String& p_code, Error* p_err);
 private:
   static GD2CPPTransformer* singleton;
 
   GDScriptParser* parser;
+  Error* err;
 };
 
 #endif

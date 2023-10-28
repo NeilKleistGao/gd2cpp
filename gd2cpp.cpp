@@ -100,9 +100,18 @@ namespace gd2cpp {
 
   String compile(const String& p_from, const String& p_dir) {
     String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
-    GD2CPPTransformer::get_singleton()->parse(p_from, ""); // TODO
-    save(to, gen_source_filename(p_from));
-    return to;
+    Error err;
+    Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
+    if (err != OK) {
+      print_error("Cannot read file " + p_from + ".");
+    }
+    else {
+      GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err); // TODO
+      save(to, gen_source_filename(p_from));
+      return to;
+    }
+
+    return "";
   }
 } // namespace gd2cpp
 
