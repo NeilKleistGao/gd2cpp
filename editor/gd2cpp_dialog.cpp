@@ -63,9 +63,9 @@ void GD2CppDialog::run() {
 
   const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "llvm");
   for (int i = 0; i < scripts.size(); ++i) {
-    const String& script = scripts[i];
-    singleton->progress_task_step(task_name, String{"Translating "} + script + "...", progress);
-    String to = gd2cpp::compile(script, output_path); // TODO: store `to` for mapping
+    const String& s = scripts[i];
+    singleton->progress_task_step(task_name, String{"Translating "} + s + "...", progress);
+    String to = gd2cpp::compile(s, output_path); // TODO: store `to` for mapping
     print_line(to);
   }
 

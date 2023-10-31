@@ -43,23 +43,52 @@ void GD2CPPTransformer::release() {
 
 String GD2CPPTransformer::transform(const String& p_path, const String& p_code, Error* p_err) {
   err = p_err;
+  filename = p_path;
   *err = parser->parse(p_code, p_path, false);
   if (*err != OK) {
     print_error("can not compile " + p_path);
   }
 
-  String res = gen_source_filename(p_path);
-  // TODO: translate
-
-  return res;
+  return gen_source_filename() + "\n" + transform_root_class(parser->get_tree());
 }
 
-GD2CPPTransformer::GD2CPPTransformer() {
+GD2CPPTransformer::GD2CPPTransformer(): err{nullptr}, filename{""} {
   parser = memnew(GDScriptParser);
 }
 
 GD2CPPTransformer::~GD2CPPTransformer() {
   memdelete(parser);
+}
+
+String GD2CPPTransformer::transform_root_class(ClassNode* p_cls) {
+  String class_name = p_cls->get_global_name();
+  if (class_name.is_empty()) { // if it is empty, the name doesn't matter
+    class_name = filename.replace("/", "_").replace(".", "_").replace(":", "_");
+  }
+
+  String res = gen_class_name(class_name) + " = type{ ";
+  bool first = true;
+  for (auto* ext: p_cls->extends) {
+    String name = ext->name;
+    if (name.is_empty()) {
+      print_error("invalid extend name in " + class_name);
+    }
+    else {
+      if (first) {
+        first = false;
+      }
+      else {
+        res += ", ";
+      }
+
+      res += gen_class_name(name);
+    }
+  }
+
+  // TODO: members
+  res += " }\n";
+
+  return res;
 }
 
 #endif

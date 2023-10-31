@@ -22,42 +22,20 @@
  * SOFTWARE.
  **/
 
-#ifndef __GD2CPP__TRANSFORMER__H__
-#define __GD2CPP__TRANSFORMER__H__
+#ifndef __GD2CPP_AST_H__
+#define __GD2CPP_AST_H__
 
 #ifdef TOOLS_ENABLED
-#include "core/object/class_db.h"
-#include "core/object/object.h"
+#include "modules/gdscript/gdscript_parser.h"
 
-#include "gd2cpp_ast.h"
-using namespace gd2cpp::ast;
+#define USE(__CLASSNAME__)\
+using __CLASSNAME__ = GDScriptParser::__CLASSNAME__
 
-class GD2CPPTransformer: public Object {
-  GDCLASS(GD2CPPTransformer, Object);
-public:
-  GD2CPPTransformer();
-  ~GD2CPPTransformer();
-  static GD2CPPTransformer* get_singleton();
-  static void release();
+namespace gd2cpp::ast {
+USE(ClassNode);
+} // namespace gd2cpp::ast
 
-  String transform(const String& p_path, const String& p_code, Error* p_err);
-private:
-  static GD2CPPTransformer* singleton;
-
-  GDScriptParser* parser;
-  Error* err;
-  String filename;
-
-  _FORCE_INLINE_ String gen_source_filename() {
-    return String{"source_filename = \""} + filename + "\"\n";
-  }
-
-  String transform_root_class(ClassNode* p_cls);
-  _FORCE_INLINE_ String gen_class_name(const String& p_name) {
-    return String{"%class."} + p_name;
-  }
-};
-
+#undef USE
 #endif
 
-#endif // __GD2CPP__TRANSFORMER__H__
+#endif // __GD2CPP_AST_H__
