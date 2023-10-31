@@ -44,6 +44,10 @@ private:
 
   GDScriptParser* parser;
   Error* err;
+
+  _FORCE_INLINE_ String gen_source_filename(const String& p_from) {
+    return String{"source_filename = \""} + p_from + "\"\n";
+  }
 };
 
 #endif

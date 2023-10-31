@@ -48,9 +48,10 @@ String GD2CPPTransformer::transform(const String& p_path, const String& p_code, 
     print_error("can not compile " + p_path);
   }
 
+  String res = gen_source_filename(p_path);
   // TODO: translate
 
-  return "";
+  return res;
 }
 
 GD2CPPTransformer::GD2CPPTransformer() {

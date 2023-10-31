@@ -53,10 +53,6 @@ namespace gd2cpp {
         file->store_string(p_content);
       }
     }
-
-    _FORCE_INLINE_ String gen_source_filename(const String& p_from) {
-      return String{"source_filename = \""} + p_from + "\"\n";
-    }
   } // namespace
 
   Array scan() {
@@ -106,8 +102,7 @@ namespace gd2cpp {
       print_error("Cannot read file " + p_from + ".");
     }
     else {
-      GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err); // TODO
-      save(to, gen_source_filename(p_from));
+      save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
       return to;
     }
 
