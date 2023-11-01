@@ -32,7 +32,6 @@ class GD2CppDialog: public ConfirmationDialog {
   GDCLASS(GD2CppDialog, ConfirmationDialog);
 public:
   GD2CppDialog();
-  ~GD2CppDialog();
 
   void ok_pressed() final;
 private:

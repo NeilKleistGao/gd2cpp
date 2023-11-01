@@ -102,7 +102,7 @@ namespace gd2cpp {
       print_error("Cannot read file " + p_from + ".");
     }
     else {
-      save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
+      // save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
       return to;
     }
 

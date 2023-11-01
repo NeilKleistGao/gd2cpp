@@ -31,9 +31,25 @@
 #define USE(__CLASSNAME__)\
 using __CLASSNAME__ = GDScriptParser::__CLASSNAME__
 
-namespace gd2cpp::ast {
-USE(ClassNode);
-} // namespace gd2cpp::ast
+namespace gd2cpp {
+  namespace gdast {
+    USE(ClassNode);
+  } // namespace gdast
+
+  namespace cppast {
+    class Node {
+    private:
+    protected:
+    public:
+    };
+
+    class ClassNode: public Node {
+    private:
+    protected:
+    public:
+    };
+  } // namespace cppast
+} // namespace gd2cpp
 
 #undef USE
 #endif

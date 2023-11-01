@@ -22,26 +22,7 @@
  * SOFTWARE.
  **/
 
-#ifndef __EDITOR_GD2CPP_MENU__H__
-#define __EDITOR_GD2CPP_MENU__H__
+#include "gd2cpp_ast.h"
 
 #ifdef TOOLS_ENABLED
-#include "editor/editor_plugin.h"
-#include "gd2cpp_dialog.h"
-
-class GD2CppMenu: public EditorPlugin {
-  GDCLASS(GD2CppMenu, EditorPlugin);
-public:
-  virtual String get_name() const override;
-	bool has_main_screen() const override;
-  GD2CppMenu();
-  virtual ~GD2CppMenu();
-private:
-  const String shown_title;
-  GD2CppDialog* dialog;
-
-  void popup();
-};
 #endif
-
-#endif // __EDITOR_GD2CPP_MENU__H__

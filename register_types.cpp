@@ -25,17 +25,54 @@
 #include "register_types.h"
 
 #ifdef TOOLS_ENABLED
-#include "editor/gd2cpp_menu.h"
+#include "editor/gd2cpp_dialog.h"
+#include "core/config/project_settings.h"
+#include "editor/editor_node.h"
+#include "editor/editor_plugin.h"
+#endif
+
+#ifdef TOOLS_ENABLED
+class GD2CppPlugin: public EditorPlugin {
+  GDCLASS(GD2CppPlugin, EditorPlugin);
+private:
+  GD2CppDialog* dialog;
+public:
+  String get_name() const override {
+    return "GD2Cpp";
+  }
+	bool has_main_screen() const override {
+    return false;
+  }
+
+  void popup() {
+    dialog->popup_centered_ratio(0.01f);
+  }
+
+  GD2CppPlugin(): EditorPlugin() {
+    dialog = memnew(GD2CppDialog);
+    add_child(dialog);
+  }
+};
+
+static GD2CppPlugin* plugin;
+
+static void _editor_init() {
+  plugin = memnew(GD2CppPlugin);
+  EditorNode::get_singleton()->add_child(plugin);
+  plugin->add_tool_menu_item("Export with GD2Cpp", callable_mp(plugin, &GD2CppPlugin::popup));
+}
 #endif
 
 void initialize_gd2cpp_module(ModuleInitializationLevel p_level) {
 #ifdef TOOLS_ENABLED
   if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
-    EditorPlugins::add_by_type<GD2CppMenu>();
+    GLOBAL_DEF_RST("gd2cpp/template", "");
+    GLOBAL_DEF_RST("gd2cpp/directory", "natives");
+    EditorPlugins::add_by_type<GD2CppPlugin>();
+    EditorNode::add_init_callback(_editor_init);
   }
 #endif
 }
 
 void uninitialize_gd2cpp_module(ModuleInitializationLevel p_level) {
-  // TODO: implement
 }

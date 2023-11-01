@@ -49,13 +49,6 @@ void GD2CppDialog::ok_pressed() {
   run();
 }
 
-GD2CppDialog::~GD2CppDialog() {
-  if (hint_text != nullptr) {
-    memdelete(hint_text);
-    hint_text = nullptr;
-  }
-}
-
 void GD2CppDialog::run() {
   EditorNode* singleton = EditorNode::get_singleton();
   print_line("Scanning project...");
@@ -73,7 +66,7 @@ void GD2CppDialog::run() {
   }
 
   singleton->progress_end_task(task_name);
-  GD2CPPTransformer::release();
+  // GD2CPPTransformer::release();
 }
 
 #endif
