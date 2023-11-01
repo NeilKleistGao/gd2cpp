@@ -37,7 +37,6 @@ public:
   GD2CppMenu();
   virtual ~GD2CppMenu();
 private:
-  static bool inited;
   const String shown_title;
   GD2CppDialog* dialog;
 

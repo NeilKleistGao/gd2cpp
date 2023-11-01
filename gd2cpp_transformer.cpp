@@ -57,7 +57,10 @@ GD2CPPTransformer::GD2CPPTransformer(): err{nullptr}, filename{""} {
 }
 
 GD2CPPTransformer::~GD2CPPTransformer() {
-  memdelete(parser);
+  if (parser != nullptr) {
+    memdelete(parser);
+    parser = nullptr;
+  }
 }
 
 String GD2CPPTransformer::transform_root_class(ClassNode* p_cls) {

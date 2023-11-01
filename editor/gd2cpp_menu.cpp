@@ -25,18 +25,12 @@
 #include "gd2cpp_menu.h"
 
 #ifdef TOOLS_ENABLED
-
 #include "core/config/project_settings.h"
 
-bool GD2CppMenu::inited = false;
-
-GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
-  if (!inited) { // TODO: do better?
-    inited = true;
-    add_tool_menu_item(shown_title, callable_mp(this, &GD2CppMenu::popup));
-    dialog = memnew(GD2CppDialog);
-    add_child(dialog);
-  }
+GD2CppMenu::GD2CppMenu(): shown_title{"Export with GD2Cpp"}, dialog{nullptr} {
+  add_tool_menu_item(shown_title, callable_mp(this, &GD2CppMenu::popup));
+  dialog = memnew(GD2CppDialog);
+  add_child(dialog);
 
   if (!ProjectSettings::get_singleton()->has_setting("gd2cpp/template")) {
     GLOBAL_DEF("gd2cpp/template", "");
@@ -50,8 +44,12 @@ GD2CppMenu::GD2CppMenu(): shown_title("Export with GD2Cpp") {
 }
 
 GD2CppMenu::~GD2CppMenu() {
-  memdelete(dialog);
-  dialog = nullptr;
+  if (dialog != nullptr) {
+    memdelete(dialog);
+    dialog = nullptr;
+  }
+
+  remove_tool_menu_item(shown_title);
 }
 
 String GD2CppMenu::get_name() const {

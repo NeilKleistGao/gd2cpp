@@ -50,7 +50,10 @@ void GD2CppDialog::ok_pressed() {
 }
 
 GD2CppDialog::~GD2CppDialog() {
-  memdelete(hint_text);
+  if (hint_text != nullptr) {
+    memdelete(hint_text);
+    hint_text = nullptr;
+  }
 }
 
 void GD2CppDialog::run() {
