@@ -29,7 +29,6 @@
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
 #include "core/config/project_settings.h"
-#include "editor/editor_node.h"
 
 #include "gd2cpp_transformer.h"
 
@@ -96,14 +95,16 @@ namespace gd2cpp {
     }
 
     String compile(const String& p_from, const String& p_dir) {
-      String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
+      String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".cpp");
       Error err;
       Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
       if (err != OK) {
         print_error("Cannot read file " + p_from + ".");
       }
       else {
-        // save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
+        gd2cpp::cppast::Program* res = GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err);
+        save(to, res->to_string());
+        memdelete(res);
         return to;
       }
 
@@ -128,7 +129,7 @@ namespace gd2cpp {
     }
 
     p_diag->finish();
-    // GD2CPPTransformer::release();
+    GD2CPPTransformer::release();
   }
 } // namespace gd2cpp
 

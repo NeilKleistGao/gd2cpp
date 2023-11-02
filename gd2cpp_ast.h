@@ -41,12 +41,29 @@ namespace gd2cpp {
     private:
     protected:
     public:
+      virtual ~Node() = default;
+      virtual String to_string() = 0;
     };
 
-    class ClassNode: public Node {
+    class Class: public Node {
     private:
     protected:
     public:
+      virtual ~Class() override = default;
+      String to_string() final;
+    };
+
+    class Program: public Node {
+    private:
+      const String header_comment;
+      Class* main_class;
+    protected:
+    public:
+      virtual ~Program() override;
+      String to_string() final;
+      static Program* create(Class* p_cls);
+
+      Program();
     };
   } // namespace cppast
 } // namespace gd2cpp
