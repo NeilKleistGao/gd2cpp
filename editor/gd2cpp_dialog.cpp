@@ -31,9 +31,7 @@
 #include "../gd2cpp.h"
 #include "../gd2cpp_transformer.h"
 
-String GD2CppDialog::task_name = "gd2cpp";
-
-GD2CppDialog::GD2CppDialog() {
+GD2CppDialog::GD2CppDialog(): task_name("gd2cpp") {
   set_title(TTR("Export with GD2Cpp"));
   hint_text = memnew(Label);
   hint_text->set_text(
@@ -45,28 +43,16 @@ GD2CppDialog::GD2CppDialog() {
 void GD2CppDialog::ok_pressed() {
   EditorNode* singleton = EditorNode::get_singleton();
   singleton->progress_add_task(task_name, "Scanning project...", full_steps);
-  singleton->progress_task_step(task_name, "Scanning project...", 0);
-  run();
+  step("Scanning project...", 0);
+  gd2cpp::run(this);
 }
 
-void GD2CppDialog::run() {
-  EditorNode* singleton = EditorNode::get_singleton();
-  print_line("Scanning project...");
+void GD2CppDialog::step(const String& p_info, int p_step) const {
+  EditorNode::get_singleton()->progress_task_step(task_name, p_info, p_step);
+}
 
-  Array scripts = gd2cpp::scan();
-  print_line(String{"Got "} + String::num_int64(scripts.size()) + String{" script(s)."});
-  ++progress;
-
-  const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "llvm");
-  for (int i = 0; i < scripts.size(); ++i) {
-    const String& s = scripts[i];
-    singleton->progress_task_step(task_name, String{"Translating "} + s + "...", progress);
-    String to = gd2cpp::compile(s, output_path); // TODO: store `to` for mapping
-    print_line(to);
-  }
-
-  singleton->progress_end_task(task_name);
-  // GD2CPPTransformer::release();
+void GD2CppDialog::finish() const {
+  EditorNode::get_singleton()->progress_end_task(task_name);
 }
 
 #endif

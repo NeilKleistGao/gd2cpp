@@ -29,10 +29,10 @@
 
 #include "core/string/ustring.h"
 #include "core/variant/array.h"
+#include "editor/gd2cpp_dialog.h"
 
 namespace gd2cpp {
-  Array scan();
-  String compile(const String& p_from, const String& p_dir);
+  void run(GD2CppDialog* p_diag);
 } // namespace gd2cpp
 
 #endif

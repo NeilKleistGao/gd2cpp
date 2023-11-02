@@ -28,12 +28,14 @@
 #include "core/variant/variant.h"
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
+#include "core/config/project_settings.h"
+#include "editor/editor_node.h"
 
 #include "gd2cpp_transformer.h"
 
 namespace gd2cpp {
   namespace {
-    void save(const String& p_filename, const String& p_content) {
+    static void save(const String& p_filename, const String& p_content) {
       Error err;
       const String path = p_filename.get_base_dir();
       Ref<DirAccess> dir = DirAccess::open("res://", &err);
@@ -53,60 +55,80 @@ namespace gd2cpp {
         file->store_string(p_content);
       }
     }
-  } // namespace
 
-  Array scan() {
-    Array scripts{}, queue{};
-    queue.push_back(String{"res://"});
-    Error err = Error::OK;
+    Array scan() {
+      Array scripts{}, queue{};
+      queue.push_back(String{"res://"});
+      Error err = Error::OK;
 
-    while (!queue.is_empty()) {
-      String cur = queue.pop_front();
-      print_line(String{"Scanning "} + cur);
-      Ref<DirAccess> dir = DirAccess::open(cur, &err);
+      while (!queue.is_empty()) {
+        String cur = queue.pop_front();
+        print_line(String{"Scanning "} + cur);
+        Ref<DirAccess> dir = DirAccess::open(cur, &err);
 
-      if (err != Error::OK) {
-        ERR_PRINT("Failed when scanning project.");
-        scripts.clear();
-        break;
-      }
+        if (err != Error::OK) {
+          ERR_PRINT("Failed when scanning project.");
+          scripts.clear();
+          break;
+        }
 
-      PackedStringArray files = dir->get_files();
-      PackedStringArray dirs = dir->get_directories();
+        PackedStringArray files = dir->get_files();
+        PackedStringArray dirs = dir->get_directories();
 
-      for (int i = 0; i < files.size(); ++i) {
-        String filename = files[i];
-        if (filename.ends_with(".gd")) {
-          String fullpath = (cur.ends_with("/")) ? cur + filename : cur + "/" + filename;
-          if (scripts.find(fullpath) == -1) {
-            print_line(String{"Found "} + fullpath);
-            scripts.push_back(fullpath);
+        for (int i = 0; i < files.size(); ++i) {
+          String filename = files[i];
+          if (filename.ends_with(".gd")) {
+            String fullpath = (cur.ends_with("/")) ? cur + filename : cur + "/" + filename;
+            if (scripts.find(fullpath) == -1) {
+              print_line(String{"Found "} + fullpath);
+              scripts.push_back(fullpath);
+            }
           }
+        }
+
+        for (int i = 0; i < dirs.size(); ++i) {
+          String next = dirs[i];
+          queue.push_back(DirAccess::get_full_path(next, DirAccess::ACCESS_RESOURCES));
         }
       }
 
-      for (int i = 0; i < dirs.size(); ++i) {
-        String next = dirs[i];
-        queue.push_back(DirAccess::get_full_path(next, DirAccess::ACCESS_RESOURCES));
+      return scripts;
+    }
+
+    String compile(const String& p_from, const String& p_dir) {
+      String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
+      Error err;
+      Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
+      if (err != OK) {
+        print_error("Cannot read file " + p_from + ".");
       }
+      else {
+        // save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
+        return to;
+      }
+
+      return "";
+    }
+  } // namespace
+
+  void run(GD2CppDialog* p_diag) {
+    int progress = 0;
+    print_line("Scanning project...");
+
+    Array scripts = gd2cpp::scan();
+    print_line(String{"Got "} + String::num_int64(scripts.size()) + String{" script(s)."});
+    ++progress;
+
+    const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "llvm");
+    for (int i = 0; i < scripts.size(); ++i) {
+      const String& s = scripts[i];
+      p_diag->step(String{"Translating "} + s + "...", progress);
+      String to = gd2cpp::compile(s, output_path); // TODO: store `to` for mapping
+      print_line(to);
     }
 
-    return scripts;
-  }
-
-  String compile(const String& p_from, const String& p_dir) {
-    String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".ll");
-    Error err;
-    Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
-    if (err != OK) {
-      print_error("Cannot read file " + p_from + ".");
-    }
-    else {
-      // save(to, GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err));
-      return to;
-    }
-
-    return "";
+    p_diag->finish();
+    // GD2CPPTransformer::release();
   }
 } // namespace gd2cpp
 

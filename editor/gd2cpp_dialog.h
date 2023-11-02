@@ -34,10 +34,11 @@ public:
   GD2CppDialog();
 
   void ok_pressed() final;
+  void step(const String& p_info, int p_step) const;
+  void finish() const;
 private:
   Label* hint_text = nullptr;
 
-  int progress = 0;
   /**
    * 0. scan scripts
    * 1. translate
@@ -48,9 +49,7 @@ private:
    * 6. reset
   */
   const int full_steps = 7;
-  static String task_name;
-
-  void run();
+  String task_name;
 };
 #endif
 
