@@ -95,7 +95,6 @@ namespace gd2cpp {
     }
 
     String compile(const String& p_from, const String& p_dir) {
-      String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", ".cpp");
       Error err;
       Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
       if (err != OK) {
@@ -103,7 +102,12 @@ namespace gd2cpp {
       }
       else {
         gd2cpp::cppast::Program* res = GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err);
-        save(to, res->to_string());
+        String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", "");
+        String header = to + ".h";
+        String source = to + ".cpp";
+        
+        save(header, res->to_header());
+        save(source, res->to_source());
         memdelete(res);
         return to;
       }

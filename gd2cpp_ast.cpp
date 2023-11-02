@@ -36,16 +36,29 @@ namespace gd2cpp::cppast {
   }
 
   Program* Program::create(Class* p_cls) {
-    Program* prog = memnew(gd2cpp::cppast::Program);
+    Program* prog = memnew(Program);
     prog->main_class = p_cls;
     return prog;
   }
 
-  String Program::to_string() {
-    return header_comment /*+ main_class->to_string()*/; // TODO
+  String Program::to_header() {
+    return header_comment + main_class->to_header(); // TODO
   }
 
-  String Class::to_string() {
+  String Program::to_source() {
+    return header_comment + main_class->to_source(); // TODO
+  }
+
+  Class* Class::create() {
+    Class* cls = memnew(Class);
+    return cls;
+  }
+
+  String Class::to_header() {
+    return ""; // TODO
+  }
+
+  String Class::to_source() {
     return ""; // TODO
   }
 } // namespace gd2cpp::cppast

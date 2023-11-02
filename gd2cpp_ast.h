@@ -42,7 +42,8 @@ namespace gd2cpp {
     protected:
     public:
       virtual ~Node() = default;
-      virtual String to_string() = 0;
+      virtual String to_header() = 0;
+      virtual String to_source() = 0;
     };
 
     class Class: public Node {
@@ -50,7 +51,9 @@ namespace gd2cpp {
     protected:
     public:
       virtual ~Class() override = default;
-      String to_string() final;
+      String to_header() final;
+      String to_source() final;
+      static Class* create();
     };
 
     class Program: public Node {
@@ -60,7 +63,8 @@ namespace gd2cpp {
     protected:
     public:
       virtual ~Program() override;
-      String to_string() final;
+      String to_header() final;
+      String to_source() final;
       static Program* create(Class* p_cls);
 
       Program();
