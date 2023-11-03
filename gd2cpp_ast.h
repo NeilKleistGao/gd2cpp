@@ -57,15 +57,23 @@ namespace gd2cpp {
     };
 
     class Program: public Node {
-    private:
-      const String header_comment;
+    private:    
+      const String lead_comment;
       Class* main_class;
+      String header_path;
+      String source_path;
+
+      static void save(const String& p_filename, const String& p_content);
+
+      String gen_include(const String& p_filename);
     protected:
     public:
       virtual ~Program() override;
       String to_header() final;
       String to_source() final;
-      static Program* create(Class* p_cls);
+      static Program* create(Class* p_cls, const String& p_header, const String& p_source);
+
+      void save();
 
       Program();
     };

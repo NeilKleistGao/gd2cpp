@@ -40,7 +40,7 @@ public:
   static GD2CPPTransformer* get_singleton();
   static void release();
 
-  gd2cpp::cppast::Program* transform(const String& p_path, const String& p_code, Error* p_err);
+  gd2cpp::cppast::Program* transform(const String& p_from, const String& p_to, const String& p_code, Error* p_err);
 private:
   static GD2CPPTransformer* singleton;
 

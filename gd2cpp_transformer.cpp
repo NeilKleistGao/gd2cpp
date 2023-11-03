@@ -41,14 +41,16 @@ void GD2CPPTransformer::release() {
   }
 }
 
-gd2cpp::cppast::Program* GD2CPPTransformer::transform(const String& p_path, const String& p_code, Error* p_err) {
+gd2cpp::cppast::Program* GD2CPPTransformer::transform(const String& p_from, const String& p_to, const String& p_code, Error* p_err) {
   err = p_err;
-  *err = parser->parse(p_code, p_path, false);
+  *err = parser->parse(p_code, p_from, false);
   if (*err != OK) {
-    print_error("can not compile " + p_path);
+    print_error("can not compile " + p_from);
   }
 
-  gd2cpp::cppast::Program* prog = gd2cpp::cppast::Program::create(nullptr);
+  String header = p_to + ".h";
+  String source = p_to + ".cpp";
+  gd2cpp::cppast::Program* prog = gd2cpp::cppast::Program::create(nullptr, header, source);
 
   return prog;
 }

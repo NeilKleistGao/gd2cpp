@@ -34,27 +34,6 @@
 
 namespace gd2cpp {
   namespace {
-    static void save(const String& p_filename, const String& p_content) {
-      Error err;
-      const String path = p_filename.get_base_dir();
-      Ref<DirAccess> dir = DirAccess::open("res://", &err);
-      if (!dir->dir_exists(path)) {
-        err = dir->make_dir_recursive(path);
-        if (err != OK) {
-          print_error("Cannot create directory " + path + ".");
-          return;
-        }
-      }
-
-		  Ref<FileAccess> file = FileAccess::open(p_filename, FileAccess::WRITE, &err);
-      if (err != OK) {
-        print_error("Cannot save LLVM file " + p_filename + ".");
-      }
-      else {
-        file->store_string(p_content);
-      }
-    }
-
     Array scan() {
       Array scripts{}, queue{};
       queue.push_back(String{"res://"});
@@ -94,25 +73,19 @@ namespace gd2cpp {
       return scripts;
     }
 
-    String compile(const String& p_from, const String& p_dir) {
+    void compile(const String& p_from, const String& p_dir) {
       Error err;
       Ref<FileAccess> file = FileAccess::open(p_from, FileAccess::READ, &err);
       if (err != OK) {
         print_error("Cannot read file " + p_from + ".");
       }
       else {
-        gd2cpp::cppast::Program* res = GD2CPPTransformer::get_singleton()->transform(p_from, file->get_as_utf8_string(), &err);
         String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", "");
-        String header = to + ".h";
-        String source = to + ".cpp";
+        cppast::Program* res = GD2CPPTransformer::get_singleton()->transform(p_from, to, file->get_as_utf8_string(), &err);
         
-        save(header, res->to_header());
-        save(source, res->to_source());
+        res->save();
         memdelete(res);
-        return to;
       }
-
-      return "";
     }
   } // namespace
 
@@ -120,7 +93,7 @@ namespace gd2cpp {
     int progress = 0;
     print_line("Scanning project...");
 
-    Array scripts = gd2cpp::scan();
+    Array scripts = scan();
     print_line(String{"Got "} + String::num_int64(scripts.size()) + String{" script(s)."});
     ++progress;
 
@@ -128,8 +101,7 @@ namespace gd2cpp {
     for (int i = 0; i < scripts.size(); ++i) {
       const String& s = scripts[i];
       p_diag->step(String{"Translating "} + s + "...", progress);
-      String to = gd2cpp::compile(s, output_path); // TODO: store `to` for mapping
-      print_line(to);
+      compile(s, output_path);
     }
 
     p_diag->finish();
