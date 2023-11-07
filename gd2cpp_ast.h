@@ -64,8 +64,9 @@ namespace gd2cpp {
       String source_path;
 
       static void save(const String& p_filename, const String& p_content);
+      static String gen_include(const String& p_filename);
 
-      String gen_include(const String& p_filename);
+      String wrap_header(const String& p_content);
     protected:
     public:
       virtual ~Program() override;

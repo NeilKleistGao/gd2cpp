@@ -45,8 +45,17 @@ namespace gd2cpp::cppast {
     return prog;
   }
 
+  String Program::wrap_header(const String& p_content) {
+    const String macro_name = "__" + header_path.get_file().replace(".", "_").to_upper() + "__";
+    String res = "#ifndef " + macro_name + "\n";
+    res += "#define " + macro_name + "\n";
+    res += p_content;
+    res += "#endif // " + macro_name;
+    return res;
+  }
+
   String Program::to_header() {
-    return lead_comment + main_class->to_header(); // TODO
+    return lead_comment + wrap_header(main_class->to_header()); // TODO
   }
 
   String Program::to_source() {
@@ -81,7 +90,7 @@ namespace gd2cpp::cppast {
 
 	  Ref<FileAccess> file = FileAccess::open(p_filename, FileAccess::WRITE, &err);
     if (err != OK) {
-      print_error("Cannot save LLVM file " + p_filename + ".");
+      print_error("Cannot save C++ file " + p_filename + ".");
     }
     else {
       file->store_string(p_content);
