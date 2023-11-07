@@ -48,20 +48,21 @@ namespace gd2cpp {
 
     class Class: public Node {
     private:
+      String name{};
     protected:
     public:
       virtual ~Class() override = default;
       String to_header() final;
       String to_source() final;
-      static Class* create();
+      static Class* create(const String& p_name);
     };
 
     class Program: public Node {
     private:    
       const String lead_comment;
       Class* main_class;
-      String header_path;
-      String source_path;
+      String header_path{};
+      String source_path{};
 
       static void save(const String& p_filename, const String& p_content);
       static String gen_include(const String& p_filename);

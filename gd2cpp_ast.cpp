@@ -97,13 +97,16 @@ namespace gd2cpp::cppast {
     }
   }
 
-  Class* Class::create() {
+  Class* Class::create(const String& p_name) {
     Class* cls = memnew(Class);
+    cls->name = p_name;
     return cls;
   }
 
   String Class::to_header() {
-    return ""; // TODO
+    String res = "class " + name + " {\n";
+     // TODO
+    return res + "};\n";
   }
 
   String Class::to_source() {

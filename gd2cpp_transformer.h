@@ -46,6 +46,8 @@ private:
 
   GDScriptParser* parser;
   Error* err;
+
+  gd2cpp::cppast::Class* transform_class(ClassNode* p_node, const String& p_default_name);
 };
 
 #endif

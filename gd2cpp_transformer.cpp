@@ -50,9 +50,24 @@ gd2cpp::cppast::Program* GD2CPPTransformer::transform(const String& p_from, cons
 
   String header = p_to + ".h";
   String source = p_to + ".cpp";
-  gd2cpp::cppast::Program* prog = gd2cpp::cppast::Program::create(nullptr, header, source);
+  String default_name = p_to.get_file();
+  gd2cpp::cppast::Program* prog =
+    gd2cpp::cppast::Program::create(transform_class(parser->get_tree(), default_name), header, source);
 
   return prog;
+}
+
+gd2cpp::cppast::Class* GD2CPPTransformer::transform_class(ClassNode* p_node, const String& p_default_name) {
+  String name = p_node->get_global_name();
+  if (name.is_empty()) {
+    name = p_default_name + "__Generated"; // TODO: hygiene?
+  }
+
+  gd2cpp::cppast::Class* res = gd2cpp::cppast::Class::create(name);
+
+  // TODO
+
+  return res;
 }
 
 GD2CPPTransformer::GD2CPPTransformer(): err{nullptr} {
