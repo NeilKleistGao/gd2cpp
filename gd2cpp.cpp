@@ -31,6 +31,7 @@
 #include "core/config/project_settings.h"
 
 #include "gd2cpp_transformer.h"
+#include "gd2cpp_db.h"
 
 namespace gd2cpp {
   namespace {
@@ -106,6 +107,7 @@ namespace gd2cpp {
 
     p_diag->finish();
     GD2CPPTransformer::release();
+    GD2CppDB::release();
   }
 } // namespace gd2cpp
 

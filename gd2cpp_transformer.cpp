@@ -64,8 +64,9 @@ gd2cpp::cppast::Class* GD2CPPTransformer::transform_class(ClassNode* p_node, con
   }
 
   gd2cpp::cppast::Class* res = gd2cpp::cppast::Class::create(name);
-
-  // TODO
+  for (const auto& id: p_node->extends) {
+    res->push_parent(id->name);
+  }
 
   return res;
 }

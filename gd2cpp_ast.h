@@ -40,21 +40,35 @@ namespace gd2cpp {
     class Node {
     private:
     protected:
+      PackedStringArray dependencies{};
     public:
       virtual ~Node() = default;
       virtual String to_header() = 0;
       virtual String to_source() = 0;
+
+      // TODO: move?
+      _FORCE_INLINE_ PackedStringArray get_dependencies() const {
+        return dependencies;
+      }
     };
 
     class Class: public Node {
     private:
       String name{};
+      PackedStringArray parents{};
+
+      String to_extends() const;
     protected:
     public:
       virtual ~Class() override = default;
       String to_header() final;
       String to_source() final;
       static Class* create(const String& p_name);
+
+      _FORCE_INLINE_ void push_parent(const String& p_parent) {
+        parents.append(p_parent);
+        dependencies.append(p_parent);
+      }
     };
 
     class Program: public Node {
