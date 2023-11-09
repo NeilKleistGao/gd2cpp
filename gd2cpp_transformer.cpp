@@ -25,23 +25,23 @@
 #include "gd2cpp_transformer.h"
 
 #ifdef TOOLS_ENABLED
-GD2CPPTransformer* GD2CPPTransformer::singleton = nullptr;
+GD2CppTransformer* GD2CppTransformer::singleton = nullptr;
 
-GD2CPPTransformer* GD2CPPTransformer::get_singleton() {
+GD2CppTransformer* GD2CppTransformer::get_singleton() {
   if (singleton == nullptr) {
-    singleton = memnew(GD2CPPTransformer);
+    singleton = memnew(GD2CppTransformer);
   }
 
   return singleton;
 }
 
-void GD2CPPTransformer::release() {
+void GD2CppTransformer::release() {
   if (singleton != nullptr) {
     memdelete(singleton);
   }
 }
 
-gd2cpp::cppast::Program* GD2CPPTransformer::transform(const String& p_from, const String& p_to, const String& p_code, Error* p_err) {
+gd2cpp::cppast::Program* GD2CppTransformer::transform(const String& p_from, const String& p_to, const String& p_code, Error* p_err) {
   err = p_err;
   *err = parser->parse(p_code, p_from, false);
   if (*err != OK) {
@@ -57,7 +57,7 @@ gd2cpp::cppast::Program* GD2CPPTransformer::transform(const String& p_from, cons
   return prog;
 }
 
-gd2cpp::cppast::Class* GD2CPPTransformer::transform_class(ClassNode* p_node, const String& p_default_name) {
+gd2cpp::cppast::Class* GD2CppTransformer::transform_class(ClassNode* p_node, const String& p_default_name) {
   String name = p_node->get_global_name();
   if (name.is_empty()) {
     name = p_default_name + "__Generated"; // TODO: hygiene?
@@ -71,11 +71,11 @@ gd2cpp::cppast::Class* GD2CPPTransformer::transform_class(ClassNode* p_node, con
   return res;
 }
 
-GD2CPPTransformer::GD2CPPTransformer(): err{nullptr} {
+GD2CppTransformer::GD2CppTransformer(): err{nullptr} {
   parser = memnew(GDScriptParser);
 }
 
-GD2CPPTransformer::~GD2CPPTransformer() {
+GD2CppTransformer::~GD2CppTransformer() {
   if (parser != nullptr) {
     memdelete(parser);
     parser = nullptr;

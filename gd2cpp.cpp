@@ -82,7 +82,7 @@ namespace gd2cpp {
       }
       else {
         String to = p_from.replace("res://", String{"res://"} + p_dir + "/").replace(".gd", "");
-        cppast::Program* res = GD2CPPTransformer::get_singleton()->transform(p_from, to, file->get_as_utf8_string(), &err);
+        cppast::Program* res = GD2CppTransformer::get_singleton()->transform(p_from, to, file->get_as_utf8_string(), &err);
         
         res->save();
         memdelete(res);
@@ -106,7 +106,7 @@ namespace gd2cpp {
     }
 
     p_diag->finish();
-    GD2CPPTransformer::release();
+    GD2CppTransformer::release();
     GD2CppDB::release();
   }
 } // namespace gd2cpp

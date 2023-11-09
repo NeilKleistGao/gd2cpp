@@ -32,17 +32,17 @@
 #include "gd2cpp_ast.h"
 using namespace gd2cpp::gdast;
 
-class GD2CPPTransformer: public Object {
-  GDCLASS(GD2CPPTransformer, Object);
+class GD2CppTransformer: public Object {
+  GDCLASS(GD2CppTransformer, Object);
 public:
-  GD2CPPTransformer();
-  ~GD2CPPTransformer();
-  static GD2CPPTransformer* get_singleton();
+  GD2CppTransformer();
+  ~GD2CppTransformer();
+  static GD2CppTransformer* get_singleton();
   static void release();
 
   gd2cpp::cppast::Program* transform(const String& p_from, const String& p_to, const String& p_code, Error* p_err);
 private:
-  static GD2CPPTransformer* singleton;
+  static GD2CppTransformer* singleton;
 
   GDScriptParser* parser;
   Error* err;
