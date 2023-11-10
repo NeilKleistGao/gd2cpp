@@ -98,7 +98,7 @@ namespace gd2cpp {
     print_line(String{"Got "} + String::num_int64(scripts.size()) + String{" script(s)."});
     ++progress;
 
-    const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "llvm");
+    const String output_path = ProjectSettings::get_singleton()->get_setting("gd2cpp/directory", "native");
     for (int i = 0; i < scripts.size(); ++i) {
       const String& s = scripts[i];
       p_diag->step(String{"Translating "} + s + "...", progress);
