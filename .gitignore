@@ -1,3 +1,5 @@
 __pycache__/
 *.o
 tests/natives/
+tests/extensions/bin/
+tests/.sconsign.dblite

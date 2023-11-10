@@ -78,7 +78,6 @@ namespace gd2cpp {
       String header_path{};
       String source_path{};
 
-      static void save(const String& p_filename, const String& p_content);
       static String gen_include(const String& p_filename);
 
       String wrap_header(const String& p_content);
@@ -88,6 +87,7 @@ namespace gd2cpp {
       String to_header() final;
       String to_source() final;
       static Program* create(Class* p_cls, const String& p_header, const String& p_source);
+      static void save(const String& p_filename, const String& p_content);
 
       void save();
 

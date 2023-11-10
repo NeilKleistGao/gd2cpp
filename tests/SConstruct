@@ -9,14 +9,14 @@ sources = Glob("natives/src/*.cpp")
 
 if env["platform"] == "macos":
   library = env.SharedLibrary(
-      "game/bin/libgdsummator.{}.{}.framework/libgdsummator.{}.{}".format(
+      "extensions/bin/libgd2cpp.{}.{}.framework/libgd2cpp.{}.{}".format(
           env["platform"], env["target"], env["platform"], env["target"]
       ),
       source=sources,
   )
 else:
   library = env.SharedLibrary(
-      "game/bin/libgdsummator{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+      "extensions/bin/libgd2cpp{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
       source=sources,
   )
 

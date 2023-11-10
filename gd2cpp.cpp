@@ -32,6 +32,7 @@
 
 #include "gd2cpp_transformer.h"
 #include "gd2cpp_db.h"
+#include "gd2cpp_consts.h"
 
 namespace gd2cpp {
   namespace {
@@ -92,6 +93,15 @@ namespace gd2cpp {
         memdelete(res);
       }
     }
+
+    void register_types(const String& p_dir) {
+      print_line("Generating register types...");
+      const String header_path = p_dir + "/register_types.h";
+      const String source_path = p_dir + "/register_types.cpp";
+
+      cppast::Program::save(header_path, types_register_header);
+      cppast::Program::save(source_path, types_register_source);
+    }
   } // namespace
 
   void run(GD2CppDialog* p_diag) {
@@ -108,6 +118,10 @@ namespace gd2cpp {
       p_diag->step(String{"Translating "} + s + "...", progress);
       compile(s, output_path);
     }
+
+    ++progress;
+    p_diag->step("Compiling project", progress);
+    register_types(output_path);
 
     p_diag->finish();
     GD2CppTransformer::release();
