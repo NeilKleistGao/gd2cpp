@@ -67,6 +67,10 @@ namespace gd2cpp {
 
         for (int i = 0; i < dirs.size(); ++i) {
           String next = dirs[i];
+          if (next == "godot-cpp") {
+            continue; // skip it
+          }
+
           queue.push_back(DirAccess::get_full_path(next, DirAccess::ACCESS_RESOURCES));
         }
       }
